@@ -28,12 +28,10 @@ def extract_includes_before_struct(filepath):
 def generate_versioned_header(struct, version, output_dir, original_path):
     struct_name = struct_with_version(struct['name'], version)
     file_path = os.path.join(output_dir, f"{struct_name}.hpp")
-    includes = extract_includes_before_struct(original_path)
 
     with open(file_path, "w") as f:
         f.write("#pragma once\n")
-        for inc in includes:
-            f.write(inc + "\n")
+        f.write(f"#include \"{original_path}\"\n")
         f.write(f"struct {struct_name} {{\n")
         for field in struct['fields']:
             f.write(f"    {field['type']} {field['name']};\n")
